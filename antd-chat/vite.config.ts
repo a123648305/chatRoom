@@ -8,4 +8,7 @@ export default defineConfig({
     UnoCSS(),
     react(),
   ],
+  build: {
+    outDir: "../dist",
+  },
 });

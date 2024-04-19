@@ -6,10 +6,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "pm2 start ecosystem.config.cjs && pm2 logs"
   },
   "dependencies": {
     "kafkajs": "^2.2.4",
+    "pm2": "^5.3.1",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
