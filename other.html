@@ -17,21 +17,17 @@
     </div>
 
     <script>
-        const socket = new WebSocket("ws://localhost:3000");
-        socket.addEventListener('open', () => {
+        const socket = io('http://localhost:3000');
+        socket.on('connect', () => {
             console.log('Connected to server');
         });
 
         function sendMessage() {
             const message = document.getElementById('message').value;
-            const data = new ArrayBuffer(JSON.stringify({
-                type:'message',
-                message
-            }))
-            socket.send(data);
+            socket.emit('message', message);
         }
 
-        socket.addEventListener('message', (message) => {
+        socket.on('message', (message) => {
             console.log(message);
             const messages = document.getElementById('messages');
             const p = document.createElement('p');
