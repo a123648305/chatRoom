@@ -1,11 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Col, Row } from "antd";
 import "./assets/css/index.less";
 
 import ChatRoom from "./components/ChatRoom";
+import { useParams } from "react-router-dom";
 
 function App() {
-  const room = [
+  const { uId } = useParams();
+  const roomList = [
     {
       id: 1,
       name: "lady",
@@ -24,6 +26,10 @@ function App() {
     },
   ];
 
+  const room = useMemo(() => {
+    return roomList.filter((item) => item.name == uId) || roomList[0];
+  }, [uId]);
+
   useEffect(() => {
     console.log("mounted");
   }, []);
@@ -32,7 +38,7 @@ function App() {
     <div>
       <Row>
         {room.map((item) => (
-          <Col span={8} offset={2} key={item.id}>
+          <Col span={room.length>1?10:24} key={item.id}>
             <ChatRoom data={item} />
           </Col>
         ))}
