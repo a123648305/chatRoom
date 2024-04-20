@@ -11,7 +11,7 @@ function App() {
     {
       id: 1,
       name: "lady",
-      connectUrl: "ws://localhost:3000",
+      connectUrl: "wss://chatroom-jd4q.onrender.com",
       users: [],
       avatar:
         "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
@@ -19,7 +19,7 @@ function App() {
     {
       id: 2,
       name: "jack",
-      connectUrl: "ws://localhost:3000",
+      connectUrl: "wss://chatroom-jd4q.onrender.com",
       users: [],
       avatar:
         "https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg",
@@ -38,7 +38,7 @@ function App() {
     <div>
       <Row>
         {room.map((item) => (
-          <Col span={room.length>1?10:24} key={item.id}>
+          <Col span={room.length > 1 ? 10 : 24} key={item.id}>
             <ChatRoom data={item} />
           </Col>
         ))}
