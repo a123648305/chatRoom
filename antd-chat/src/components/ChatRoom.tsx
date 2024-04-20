@@ -77,14 +77,20 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
     socketInstance.current.on("userConnect", (message) => {
       console.log(message);
       chatId.current = message.userId;
+
+      const historyMessage = localStorage.getItem("chatData")
+        ? JSON.parse(localStorage.getItem("chatData") as string)
+        : [];
+
       setMessages((data) => [
         ...data,
+        ...historyMessage,
         {
           user: message.user,
           timestr: message.timeStr,
           content: message.data,
           isRead: false,
-          isSender: message.userId === socketInstance.current?.id,
+          isSender: false,
           isEmit: true,
         },
       ]);
@@ -130,6 +136,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
   useEffect(() => {
     return () => {
       socketInstance.current?.disconnect();
+      localStorage.setItem("chatData", JSON.stringify(messages));
     };
   }, []);
 
@@ -189,7 +196,9 @@ const MessageCard: React.FC<{ info: MessageType }> = ({ info }) => {
     <div className="chat-message-emit">{info.content}</div>
   ) : (
     <div
-      className={`chat-message ${!info.isSender && "justify-end "}`}
+      className={`chat-message ${
+        info.isSender ? "justify-start flex-row-reverse" : ""
+      }`}
       key={info.timestr}
     >
       <Avatar src={info.avatar} />
