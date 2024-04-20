@@ -1,4 +1,4 @@
-import { Avatar, Button, Input, Space } from "antd";
+import { Avatar, Button, Input, Space, Tooltip } from "antd";
 import "../assets/css/chatRoom.less";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
@@ -25,7 +25,7 @@ type MessageType = {
 
 const ChatRoom: React.FC<PropsType> = ({ data }) => {
   const { name, connectUrl, avatar } = data;
-
+  const messageDom = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const chatId = useRef();
@@ -44,8 +44,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
       console.log("Connected to server");
       setIsOnline(true);
       setconnectLoading(false);
-      setMessages((data) => [
-        ...data,
+      const newData = [
         {
           user: "系统",
           timestr: "",
@@ -54,14 +53,14 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           isSender: false,
           isEmit: true,
         },
-      ]);
+      ];
+      updateMessageRead(newData);
     });
     socketInstance.current.on("disconnect", () => {
       console.log(`${name} closeChat`);
       setIsOnline(false);
       setconnectLoading(false);
-      setMessages((data) => [
-        ...data,
+      const newData = [
         {
           user: "系统",
           timestr: "",
@@ -70,7 +69,8 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           isSender: false,
           isEmit: true,
         },
-      ]);
+      ];
+      updateMessageRead(newData);
     });
 
     // 连接到服务器
@@ -81,9 +81,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
       const historyMessage = localStorage.getItem("chatData")
         ? JSON.parse(localStorage.getItem("chatData") as string)
         : [];
-
-      setMessages((data) => [
-        ...data,
+      const newData = [
         ...historyMessage,
         {
           user: message.user,
@@ -93,14 +91,14 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           isSender: false,
           isEmit: true,
         },
-      ]);
+      ];
+      updateMessageRead(newData);
     });
 
     socketInstance.current.on("message", (message) => {
       //   const msg = `收到消息：${message}`;
       console.log(message);
-      setMessages((data) => [
-        ...data,
+      const newData = [
         {
           user: message.user,
           timestr: message.timeStr,
@@ -109,7 +107,8 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           avatar: message.avatar,
           isSender: message.userId === socketInstance.current?.id,
         },
-      ]);
+      ];
+      updateMessageRead(newData);
     });
   };
 
@@ -127,6 +126,10 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
     };
     socketInstance.current && socketInstance.current.emit("message", objStr);
     setInputMessage("");
+  };
+
+  const updateMessageRead = (newData: MessageType[]) => {
+    setMessages((data) => [...data, ...newData]);
   };
 
   const [connectLoading, setconnectLoading] = useState(false);
@@ -165,7 +168,10 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
         </Space>
       </div>
       <div className="chat-box">
-        <div className="h-md flex flex-col overflow-y-auto chat-content">
+        <div
+          className="h-md flex flex-col overflow-y-auto chat-content"
+          ref={messageDom}
+        >
           {messages.map((message, index) => (
             <MessageCard info={message} key={index} />
           ))}
@@ -201,8 +207,9 @@ const MessageCard: React.FC<{ info: MessageType }> = ({ info }) => {
       }`}
       key={info.timestr}
     >
-      <Avatar src={info.avatar} />
-      <div className="chat-message-content">{info.content}</div>
+      <Tooltip placement="left" title={info.content} color="#87d068" open>
+        <Avatar src={info.avatar} />
+      </Tooltip>
     </div>
   );
 };
