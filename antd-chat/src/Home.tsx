@@ -1,9 +1,10 @@
-import { Button,  Select, Space } from "antd";
+import { Button, Select, Space, message } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
   const options = [
     {
       value: "lady",
@@ -18,18 +19,24 @@ const Home = () => {
   const [role, setRole] = useState("");
 
   const jump = () => {
-    console.log(role);
-    navigate(`/chatroom/${role}`);
+    if (role) {
+      navigate(`/chatroom/${role}`);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "请先选择你的角色!!!!",
+      });
+    }
   };
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
     setRole(value);
   };
 
   return (
     <div>
-      <h1>欢迎你来到 沙沙水馆</h1>
+      {contextHolder}
+      <h1>欢迎来到 沙沙水馆</h1>
       <Space>
         角色:
         <Select

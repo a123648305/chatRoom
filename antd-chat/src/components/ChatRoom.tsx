@@ -44,11 +44,33 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
       console.log("Connected to server");
       setIsOnline(true);
       setconnectLoading(false);
+      setMessages((data) => [
+        ...data,
+        {
+          user: "系统",
+          timestr: "",
+          content: `欢迎你的加入,enjoy yourself。😀😀`,
+          isRead: false,
+          isSender: false,
+          isEmit: true,
+        },
+      ]);
     });
     socketInstance.current.on("disconnect", () => {
       console.log(`${name} closeChat`);
       setIsOnline(false);
       setconnectLoading(false);
+      setMessages((data) => [
+        ...data,
+        {
+          user: "系统",
+          timestr: "",
+          content: `see you again!😘😘`,
+          isRead: false,
+          isSender: false,
+          isEmit: true,
+        },
+      ]);
     });
 
     // 连接到服务器
@@ -62,7 +84,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           timestr: message.timeStr,
           content: message.data,
           isRead: false,
-          isSender: message.user === name,
+          isSender: message.userId === socketInstance.current?.id,
           isEmit: true,
         },
       ]);
@@ -79,7 +101,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
           content: message.data,
           isRead: false,
           avatar: message.avatar,
-          isSender: message.user === name,
+          isSender: message.userId === socketInstance.current?.id,
         },
       ]);
     });
@@ -98,6 +120,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
       avatar,
     };
     socketInstance.current && socketInstance.current.emit("message", objStr);
+    setInputMessage("");
   };
 
   const [connectLoading, setconnectLoading] = useState(false);
@@ -135,7 +158,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
         </Space>
       </div>
       <div className="chat-box">
-        <div className="min-h-md flex flex-col chat-content">
+        <div className="h-md flex flex-col overflow-y-auto chat-content">
           {messages.map((message, index) => (
             <MessageCard info={message} key={index} />
           ))}
@@ -145,6 +168,7 @@ const ChatRoom: React.FC<PropsType> = ({ data }) => {
             <Input
               placeholder="请输入内容"
               onChange={(e) => setInputMessage(e.target.value)}
+              value={inputMessage}
             />
             <Button
               type="primary"
