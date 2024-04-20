@@ -1,1 +1,29 @@
 2024/04/19 14:43:29: listening on port 3000
+2024/04/20 10:50:25: listening on port 3000
+2024/04/20 10:50:59: 收到客户端消息:[object Object] object
+2024/04/20 10:50:59: sendMsg {
+2024/04/20 10:50:59:   data: '3123123',
+2024/04/20 10:50:59:   userId: '9pjfOOALSAvHqIS6AAAB',
+2024/04/20 10:50:59:   user: 'lady',
+2024/04/20 10:50:59:   avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+2024/04/20 10:50:59:   timeStr: '2024/4/20 10:50:59'
+2024/04/20 10:50:59: }
+2024/04/20 10:51:02: 收到客户端消息:[object Object] object
+2024/04/20 10:51:02: sendMsg {
+2024/04/20 10:51:02:   data: '3123123',
+2024/04/20 10:51:02:   userId: '9pjfOOALSAvHqIS6AAAB',
+2024/04/20 10:51:02:   user: 'lady',
+2024/04/20 10:51:02:   avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+2024/04/20 10:51:02:   timeStr: '2024/4/20 10:51:02'
+2024/04/20 10:51:02: }
+2024/04/20 10:51:03: 收到客户端消息:[object Object] object
+2024/04/20 10:51:03: sendMsg {
+2024/04/20 10:51:03:   data: '3123123',
+2024/04/20 10:51:03:   userId: '9pjfOOALSAvHqIS6AAAB',
+2024/04/20 10:51:03:   user: 'lady',
+2024/04/20 10:51:03:   avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+2024/04/20 10:51:03:   timeStr: '2024/4/20 10:51:03'
+2024/04/20 10:51:03: }
+2024/04/20 11:10:24: listening on port 3000
+2024/04/20 11:11:07: listening on port 3000
+2024/04/20 11:13:20: listening on port 3000

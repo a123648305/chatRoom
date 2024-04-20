@@ -1,8 +1,17 @@
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { readFile } from "node:fs/promises";
 // import kafkaInstance from "./kafka.js";
 
-const httpServer = createServer();
+const httpServer = createServer({}, async (req, res) => {
+  const content = await readFile("./test.html");
+  res.writeHead(200, {
+    "content-type": "text/html",
+  });
+  res.write(content);
+  res.end();
+});
+
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
